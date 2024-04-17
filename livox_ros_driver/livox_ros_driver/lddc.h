@@ -103,6 +103,8 @@ class Lddc {
 
   ros::NodeHandle *cur_node_;
   rosbag::Bag *bag_;
+
+  ros::Time ros_time_now_;
 };
 
 }  // namespace livox_ros

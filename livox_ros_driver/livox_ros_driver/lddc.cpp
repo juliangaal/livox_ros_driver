@@ -202,7 +202,7 @@ uint32_t Lddc::PublishPointcloud2(LidarDataQueue *queue, uint32_t packet_num,
       }
     }
 
-    cloud.header.stamp = ros::Time::now();
+    cloud.header.stamp = ros_time_now_;
 
     uint32_t single_point_num = storage_packet.point_num * echo_num;
 
@@ -492,7 +492,7 @@ uint32_t Lddc::PublishImuData(LidarDataQueue *queue, uint32_t packet_num,
       reinterpret_cast<LivoxEthPacket *>(storage_packet.raw_data);
   timestamp = GetStoragePacketTimestamp(&storage_packet, data_source);
 
-  imu_data.header.stamp = ros::Time::now();
+  imu_data.header.stamp = ros_time_now_;
 
   uint8_t point_buf[2048];
   LivoxImuDataProcess(point_buf, raw_packet);
@@ -576,6 +576,8 @@ void Lddc::DistributeLidarData(void) {
         (p_queue == nullptr)) {
       continue;
     }
+
+    ros_time_now_ = ros::Time::now();
     PollingLidarPointCloudData(lidar_id, lidar);
     PollingLidarImuData(lidar_id, lidar);
   }
